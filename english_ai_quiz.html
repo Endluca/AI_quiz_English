@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Knowledge Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        #quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        #header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        #header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        #header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        #quiz-content {
+            padding: 30px;
+        }
+        
+        #question-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        #question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        #options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        }
+        
+        .option-prefix {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .option.selected {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+        
+        .option.correct {
+            background: #e8f5e8;
+            border-color: #4caf50;
+            animation: correctPulse 0.6s ease;
+        }
+        
+        .option.incorrect {
+            background: #ffebee;
+            border-color: #f44336;
+            animation: incorrectShake 0.6s ease;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        #feedback-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        #result-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounceIn 0.8s ease;
+        }
+        
+        #feedback-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        #explanation-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        #next-btn, #download-btn, #restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        #next-btn:hover, #download-btn:hover, #restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        #results-container {
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        #results-container h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        #score-container {
+            position: relative;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 3s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.5);
+            }
+        }
+        
+        #score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            z-index: 2;
+            animation: scoreCircleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes scoreCircleGlow {
+            0% {
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            }
+            100% {
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+        }
+        
+        #score-text {
+            font-size: 60px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #total-text {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+        
+        #score-message {
+            font-size: 18px;
+            color: #333;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            animation: messageSlideIn 0.8s ease;
+        }
+        
+        #result-canvas-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #result-canvas {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #progress-container {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 20%;
+        }
+        
+        #progress-text {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes messageSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Celebration effect for correct answers */
+        .correct-celebration {
+            position: relative;
+        }
+        
+        .celebration-burst {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffd700, #ff6b6b, #4ecdc4);
+            animation: celebrationBurst 1s ease-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        @keyframes celebrationBurst {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+        
+        .star-shower {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            color: #ffd700;
+            font-size: 20px;
+            pointer-events: none;
+            animation: starShower 2s ease-out forwards;
+        }
+        
+        @keyframes starShower {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #quiz-container {
+                border-radius: 15px;
+            }
+            
+            #header {
+                padding: 20px;
+            }
+            
+            #header h1 {
+                font-size: 24px;
+            }
+            
+            #quiz-content {
+                padding: 20px;
+            }
+            
+            #question-text {
+                font-size: 18px;
+            }
+            
+            .option {
+                padding: 12px 15px;
+            }
+            
+            .option-prefix {
+                width: 25px;
+                height: 25px;
+                font-size: 14px;
+            }
+            
+            #score-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
+            #score-text {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="header">
+            <h1>AI Knowledge Quiz</h1>
+            <p>Test your understanding of Artificial Intelligence - 20 points per question</p>
+        </div>
+        <div id="quiz-content">
+            <div id="question-container">
+                <div id="question-number"></div>
+                <h2 id="question-text"></h2>
+                <div id="options-container"></div>
+            </div>
+            <div id="feedback-container" class="hidden">
+                <div id="result-icon"></div>
+                <h3 id="feedback-title"></h3>
+                <p id="explanation-text"></p>
+                <button id="next-btn">Next Question</button>
+            </div>
+            <div id="results-container" class="hidden">
+                <h2>Quiz Completed!</h2>
+                <div id="score-container">
+                    <div id="particles-container"></div>
+                    <div id="score-circle">
+                        <span id="score-text">0</span>
+                        <span id="total-text">/100</span>
+                    </div>
+                </div>
+                <p id="score-message"></p>
+                <div id="result-canvas-container">
+                    <canvas id="result-canvas" width="600" height="400"></canvas>
+                </div>
+                <button id="download-btn">Download Results</button>
+                <button id="restart-btn">Restart Quiz</button>
+            </div>
+        </div>
+        <div id="progress-container">
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <div id="progress-text">1/5</div>
+        </div>
+    </div>
+
+    <script>
+        // Immediately invoked function to avoid global variable pollution
+        (function() {
+            // Quiz data - 根据用户提供的新题目内容更新
+            const quizData = [
+                {
+                    question: "What is the best metaphor for Artificial Intelligence (AI) in this unit?",
+                    options: [
+                        "A magic wand that reads your mind",
+                        "A puppy that learns tricks over time",
+                        "A superhero that knows everything"
+                    ],
+                    answer: 1, // B. A puppy that learns tricks over time
+                    explanation: "The lesson compares AI to training a puppy – it improves with more examples and practice, just like how AI learns from data."
+                },
+                {
+                    question: "What is a prompt in the world of AI?",
+                    options: [
+                        "A tool to restart your computer",
+                        "A message you send to ask AI to do something",
+                        "A list of AI-generated answers"
+                    ],
+                    answer: 1, // B. A message you send to ask AI to do something
+                    explanation: "A prompt is how you 'talk' to AI – it's like texting your super smart robot friend with a request or command."
+                },
+                {
+                    question: "Which description best fits a Large Language Model (LLM)?",
+                    options: [
+                        "A robot with a heart and soul",
+                        "A parrot that read a million books",
+                        "A machine that makes pizzas"
+                    ],
+                    answer: 1, // B. A parrot that read a million books
+                    explanation: "An LLM is like a well-trained parrot – it learned from a huge amount of text and can talk like a human, but it doesn't actually 'understand' in a human way."
+                },
+                {
+                    question: "What is an API key compared to in the unit?",
+                    options: [
+                        "A Netflix password",
+                        "A golden ticket to access AI services",
+                        "A smartphone screen lock"
+                    ],
+                    answer: 1, // B. A golden ticket to access AI services
+                    explanation: "The API key is like a secret handshake or golden ticket – it lets apps talk to the AI system, and without it, access is denied."
+                },
+                {
+                    question: "What does the context window of an AI refer to?",
+                    options: [
+                        "How many apps the AI can run",
+                        "How fast the AI replies",
+                        "How much the AI can remember at once"
+                    ],
+                    answer: 2, // C. How much the AI can remember at once
+                    explanation: "The context window is like a whiteboard – once it fills up, the AI starts forgetting earlier parts of the conversation to make room for new ones."
+                }
+            ];
+            
+            // Quiz state variables
+            let currentQuestion = 0;
+            let score = 0;
+            let userAnswers = [];
+            let shuffledQuestions = []; // 存储打乱后的题目
+            
+            // 打乱数组的函数（Fisher-Yates算法）
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+            
+            // 为每个问题创建打乱选项的版本
+            function createShuffledQuestions() {
+                shuffledQuestions = quizData.map(question => {
+                    // 创建选项索引数组
+                    const optionIndices = question.options.map((_, index) => index);
+                    // 打乱选项索引
+                    const shuffledIndices = shuffleArray(optionIndices);
+                    
+                    // 根据打乱后的索引重新排列选项
+                    const shuffledOptions = shuffledIndices.map(index => question.options[index]);
+                    
+                    // 找到正确答案在新排列中的位置
+                    const newAnswerIndex = shuffledIndices.indexOf(question.answer);
+                    
+                    return {
+                        ...question,
+                        options: shuffledOptions,
+                        answer: newAnswerIndex,
+                        originalAnswer: question.answer // 保存原始答案索引用于调试
+                    };
+                });
+            }
+            
+            // Initialize quiz
+            function initQuiz() {
+                createShuffledQuestions(); // 创建打乱选项的题目
+                showQuestion(0);
+                updateProgress();
+            }
+            
+            // Display question
+            function showQuestion(index) {
+                const questionData = shuffledQuestions[index]; // 使用打乱后的题目
+                
+                // Update question number and text
+                document.getElementById('question-number').textContent = `Question ${index + 1}`;
+                document.getElementById('question-text').textContent = questionData.question;
+                
+                // Clear and refill options container
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = '';
+                
+                // Add options
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                questionData.options.forEach((option, i) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.innerHTML = `
+                        <div class="option-prefix">${optionLetters[i]}</div>
+                        <div class="option-text">${option}</div>
+                    `;
+                    
+                    // Add click event
+                    optionElement.addEventListener('click', () => selectOption(i));
+                    
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Hide feedback container, show question container
+                document.getElementById('feedback-container').classList.add('hidden');
+                document.getElementById('question-container').classList.remove('hidden');
+                document.getElementById('results-container').classList.add('hidden');
+                
+                // Update progress text
+                document.getElementById('progress-text').textContent = `${index + 1}/${shuffledQuestions.length}`;
+            }
+            
+            // Select option
+            function selectOption(optionIndex) {
+                const questionData = shuffledQuestions[currentQuestion]; // 使用打乱后的题目
+                const options = document.querySelectorAll('.option');
+                
+                // Prevent repeated selection
+                if (options[0].classList.contains('selected') || 
+                    options[0].classList.contains('correct') || 
+                    options[0].classList.contains('incorrect')) {
+                    return;
+                }
+                
+                // Record user answer
+                userAnswers[currentQuestion] = optionIndex;
+                
+                // Mark selected option
+                options[optionIndex].classList.add('selected');
+                
+                // Show correct and incorrect options
+                setTimeout(() => {
+                    options[questionData.answer].classList.add('correct');
+                    
+                    if (optionIndex !== questionData.answer) {
+                        options[optionIndex].classList.add('incorrect');
+                    } else {
+                        // Show celebration effect for correct answers
+                        showCorrectCelebration();
+                    }
+                    
+                    // Show feedback
+                    showFeedback(optionIndex === questionData.answer);
+                }, 500);
+            }
+            
+            // Celebration effect for correct answers
+            function showCorrectCelebration() {
+                const container = document.getElementById('quiz-content');
+                
+                // Create burst effect
+                const burst = document.createElement('div');
+                burst.className = 'celebration-burst';
+                container.appendChild(burst);
+                
+                // Create star shower effect
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        const star = document.createElement('div');
+                        star.className = 'star-shower';
+                        star.textContent = '⭐';
+                        star.style.left = Math.random() * 100 + '%';
+                        star.style.top = Math.random() * 50 + 25 + '%';
+                        container.appendChild(star);
+                        
+                        // Remove star after 2 seconds
+                        setTimeout(() => {
+                            if (star.parentNode) {
+                                star.parentNode.removeChild(star);
+                            }
+                        }, 2000);
+                    }, i * 100);
+                }
+                
+                // Remove burst effect after 1 second
+                setTimeout(() => {
+                    if (burst.parentNode) {
+                        burst.parentNode.removeChild(burst);
+                    }
+                }, 1000);
+            }
+            
+            // Show feedback
+            function showFeedback(isCorrect) {
+                const feedbackContainer = document.getElementById('feedback-container');
+                const resultIcon = document.getElementById('result-icon');
+                const feedbackTitle = document.getElementById('feedback-title');
+                const explanationText = document.getElementById('explanation-text');
+                
+                // Update feedback content
+                if (isCorrect) {
+                    resultIcon.textContent = '🎉';
+                    feedbackTitle.textContent = 'Excellent! Correct answer! +20 points';
+                    score += 20; // 20 points per question
+                } else {
+                    resultIcon.textContent = '❌';
+                    feedbackTitle.textContent = 'Incorrect answer! +0 points';
+                }
+                
+                explanationText.textContent = shuffledQuestions[currentQuestion].explanation;
+                
+                // Show feedback container
+                feedbackContainer.classList.remove('hidden');
+                
+                // Add next question button event
+                document.getElementById('next-btn').onclick = nextQuestion;
+            }
+            
+            // Next question
+            function nextQuestion() {
+                currentQuestion++;
+                
+                if (currentQuestion < shuffledQuestions.length) {
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                } else {
+                    showResults();
+                }
+            }
+            
+            // Update progress bar
+            function updateProgress() {
+                const progressFill = document.getElementById('progress-fill');
+                const progressPercentage = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
+                progressFill.style.width = progressPercentage + '%';
+            }
+            
+            // Create particle effects
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles-container');
+                
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        
+                        // Random position and color
+                        const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
+                        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.top = Math.random() * 100 + '%';
+                        
+                        particlesContainer.appendChild(particle);
+                        
+                        // Remove particle after 3 seconds
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                        }, 3000);
+                    }, i * 100);
+                }
+            }
+            
+            // Number animation effect
+            function animateScore(finalScore) {
+                const scoreElement = document.getElementById('score-text');
+                let currentScore = 0;
+                const increment = finalScore / 50; // Complete animation in 50 steps
+                
+                const timer = setInterval(() => {
+                    currentScore += increment;
+                    if (currentScore >= finalScore) {
+                        currentScore = finalScore;
+                        clearInterval(timer);
+                    }
+                    scoreElement.textContent = Math.floor(currentScore);
+                }, 40);
+            }
+            
+            // Show results
+            function showResults() {
+                const resultsContainer = document.getElementById('results-container');
+                const questionContainer = document.getElementById('question-container');
+                const feedbackContainer = document.getElementById('feedback-container');
+                const scoreMessage = document.getElementById('score-message');
+                
+                // Hide question and feedback containers
+                questionContainer.classList.add('hidden');
+                feedbackContainer.classList.add('hidden');
+                
+                // Show results container
+                resultsContainer.classList.remove('hidden');
+                
+                // Create particle effects
+                createParticles();
+                
+                // Animate score display
+                setTimeout(() => {
+                    animateScore(score);
+                }, 500);
+                
+                // Show different messages based on score
+                let message = '';
+                if (score === 100) {
+                    message = '🎉 Amazing! You are an expert in the AI field! Perfect score achieved!';
+                } else if (score >= 80) {
+                    message = '🌟 Well done! You have a great understanding of AI!';
+                } else if (score >= 60) {
+                    message = '👍 Good attempt! Keep learning about AI!';
+                } else if (score >= 40) {
+                    message = '📖 Room for improvement. Learning more about AI would be beneficial!';
+                } else {
+                    message = '💪 Keep going! The AI field awaits your exploration!';
+                }
+                
+                scoreMessage.textContent = message;
+                
+                // Generate result image
+                generateResultImage();
+                
+                // Add download button event
+                document.getElementById('download-btn').onclick = downloadResult;
+                
+                // Add restart button event
+                document.getElementById('restart-btn').onclick = restartQuiz;
+                
+                // Hide progress bar
+                document.getElementById('progress-container').style.display = 'none';
+            }
+            
+            // Generate result image (removed level information)
+            function generateResultImage() {
+                const canvas = document.getElementById('result-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set background
+                ctx.fillStyle = '#f5f7fa';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add title
+                ctx.fillStyle = '#764ba2';
+                ctx.font = 'bold 24px "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('AI Knowledge Quiz Results', canvas.width / 2, 40);
+                
+                // Add score
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 36px "Segoe UI", sans-serif';
+                ctx.fillText(`${score}/100 points`, canvas.width / 2, 100);
+                
+                // Add date
+                const date = new Date();
+                ctx.font = '16px "Segoe UI", sans-serif';
+                ctx.fillStyle = '#666';
+                ctx.fillText(`Completion Date: ${date.toLocaleDateString()}`, canvas.width / 2, 130);
+                
+                // Add divider
+                ctx.strokeStyle = '#ddd';
+                ctx.beginPath();
+                ctx.moveTo(50, 150);
+                ctx.lineTo(canvas.width - 50, 150);
+                ctx.stroke();
+                
+                // Add question review
+                ctx.textAlign = 'left';
+                ctx.font = 'bold 18px "Segoe UI", sans-serif';
+                ctx.fillStyle = '#333';
+                ctx.fillText('Question Review:', 50, 180);
+                
+                // Add results for each question
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                let yPos = 210;
+                
+                for (let i = 0; i < quizData.length; i++) {
+                    const question = quizData[i];
+                    const userAnswer = userAnswers[i];
+                    const isCorrect = userAnswer === question.answer;
+                    
+                    // Question number and status
+                    ctx.font = 'bold 16px "Segoe UI", sans-serif';
+                    ctx.fillStyle = isCorrect ? '#28a745' : '#dc3545';
+                    ctx.fillText(`Question ${i + 1}: ${isCorrect ? '✓ +20 points' : '✗ +0 points'}`, 50, yPos);
+                    
+                    // User choice and correct answer
+                    ctx.font = '14px "Segoe UI", sans-serif';
+                    ctx.fillStyle = '#555';
+                    ctx.fillText(`Your choice: ${optionLetters[userAnswer]} | Correct answer: ${optionLetters[question.answer]}`, 200, yPos);
+                    
+                    yPos += 30;
+                }
+                
+                // Add footer information
+                ctx.textAlign = 'center';
+                ctx.font = 'italic 14px "Segoe UI", sans-serif';
+                ctx.fillStyle = '#777';
+                ctx.fillText('Keep learning and exploring the wonderful world of AI!', canvas.width / 2, canvas.height - 30);
+            }
+            
+            // Download result image
+            function downloadResult() {
+                const canvas = document.getElementById('result-canvas');
+                const link = document.createElement('a');
+                
+                // Set download attributes
+                link.download = `AI_Quiz_Results_${score}points.png`;
+                link.href = canvas.toDataURL('image/png');
+                
+                // Simulate click to download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            // Restart quiz
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                userAnswers = [];
+                
+                // Clear particle effects
+                const particlesContainer = document.getElementById('particles-container');
+                particlesContainer.innerHTML = '';
+                
+                // Reset progress bar
+                document.getElementById('progress-container').style.display = 'flex';
+                
+                // Show first question
+                showQuestion(0);
+                updateProgress();
+            }
+            
+            // Initialize application when DOM is loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initQuiz);
+            } else {
+                initQuiz();
+            }
+        })();
+    </script>
+</body>
+</html>
