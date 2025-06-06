@@ -11,9 +11,21 @@
             box-sizing: border-box;
         }
         
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #e9ecef;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -32,7 +44,7 @@
         }
         
         #header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
             padding: 30px;
             text-align: center;
@@ -54,7 +66,7 @@
         }
         
         #question-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
@@ -66,7 +78,7 @@
         
         #question-text {
             font-size: 20px;
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 25px;
             line-height: 1.6;
         }
@@ -81,8 +93,8 @@
             display: flex;
             align-items: center;
             padding: 15px 20px;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -100,7 +112,7 @@
         .option-prefix {
             width: 30px;
             height: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -114,23 +126,23 @@
         .option-text {
             flex: 1;
             font-size: 16px;
-            color: #333;
+            color: var(--text-color);
         }
         
         .option.selected {
             background: #fff3e0;
-            border-color: #ff9800;
+            border-color: var(--warning-color);
         }
         
         .option.correct {
             background: #e8f5e8;
-            border-color: #4caf50;
+            border-color: var(--success-color);
             animation: correctPulse 0.6s ease;
         }
         
         .option.incorrect {
             background: #ffebee;
-            border-color: #f44336;
+            border-color: var(--error-color);
             animation: incorrectShake 0.6s ease;
         }
         
@@ -159,7 +171,7 @@
         #feedback-title {
             font-size: 24px;
             margin-bottom: 15px;
-            color: #333;
+            color: var(--text-color);
         }
         
         #explanation-text {
@@ -167,14 +179,14 @@
             color: #666;
             line-height: 1.6;
             margin-bottom: 25px;
-            background: #f8f9fa;
+            background: var(--light-bg);
             padding: 20px;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid var(--primary-color);
         }
         
-        #next-btn, #download-btn, #restart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn {
+            background: var(--primary-gradient);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -186,7 +198,7 @@
             margin: 0 10px;
         }
         
-        #next-btn:hover, #download-btn:hover, #restart-btn:hover {
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
@@ -198,7 +210,7 @@
         
         #results-container h2 {
             font-size: 28px;
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 30px;
         }
         
@@ -231,21 +243,15 @@
         }
         
         @keyframes particleFloat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(0.5);
-            }
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(0.5); }
         }
         
         #score-circle {
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -258,12 +264,8 @@
         }
         
         @keyframes scoreCircleGlow {
-            0% {
-                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            }
-            100% {
-                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.3);
-            }
+            0% { box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
+            100% { box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.3); }
         }
         
         #score-text {
@@ -279,7 +281,7 @@
         
         #score-message {
             font-size: 18px;
-            color: #333;
+            color: var(--text-color);
             margin: 20px 0;
             padding: 15px;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -304,7 +306,7 @@
         
         #progress-container {
             padding: 20px 30px;
-            background: #f8f9fa;
+            background: var(--light-bg);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -313,7 +315,7 @@
         #progress-bar {
             flex: 1;
             height: 8px;
-            background: #e9ecef;
+            background: var(--border-color);
             border-radius: 4px;
             margin-right: 15px;
             overflow: hidden;
@@ -321,7 +323,7 @@
         
         #progress-fill {
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             border-radius: 4px;
             transition: width 0.3s ease;
             width: 20%;
@@ -329,7 +331,7 @@
         
         #progress-text {
             font-weight: 600;
-            color: #333;
+            color: var(--text-color);
             font-size: 14px;
         }
         
@@ -338,45 +340,19 @@
         }
         
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
         }
         
         @keyframes messageSlideIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Celebration effect for correct answers */
-        .correct-celebration {
-            position: relative;
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
         .celebration-burst {
@@ -394,18 +370,9 @@
         }
         
         @keyframes celebrationBurst {
-            0% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(0);
-            }
-            50% {
-                opacity: 0.8;
-                transform: translate(-50%, -50%) scale(1.5);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(3);
-            }
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.5); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
         }
         
         .star-shower {
@@ -419,55 +386,20 @@
         }
         
         @keyframes starShower {
-            0% {
-                opacity: 1;
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-150px) rotate(360deg);
-            }
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-150px) rotate(360deg); }
         }
         
         @media (max-width: 600px) {
-            #quiz-container {
-                border-radius: 15px;
-            }
-            
-            #header {
-                padding: 20px;
-            }
-            
-            #header h1 {
-                font-size: 24px;
-            }
-            
-            #quiz-content {
-                padding: 20px;
-            }
-            
-            #question-text {
-                font-size: 18px;
-            }
-            
-            .option {
-                padding: 12px 15px;
-            }
-            
-            .option-prefix {
-                width: 25px;
-                height: 25px;
-                font-size: 14px;
-            }
-            
-            #score-circle {
-                width: 150px;
-                height: 150px;
-            }
-            
-            #score-text {
-                font-size: 48px;
-            }
+            #quiz-container { border-radius: 15px; }
+            #header { padding: 20px; }
+            #header h1 { font-size: 24px; }
+            #quiz-content { padding: 20px; }
+            #question-text { font-size: 18px; }
+            .option { padding: 12px 15px; }
+            .option-prefix { width: 25px; height: 25px; font-size: 14px; }
+            #score-circle { width: 150px; height: 150px; }
+            #score-text { font-size: 48px; }
         }
     </style>
 </head>
@@ -487,7 +419,7 @@
                 <div id="result-icon"></div>
                 <h3 id="feedback-title"></h3>
                 <p id="explanation-text"></p>
-                <button id="next-btn">Next Question</button>
+                <button id="next-btn" class="btn">Next Question</button>
             </div>
             <div id="results-container" class="hidden">
                 <h2>Quiz Completed!</h2>
@@ -502,8 +434,8 @@
                 <div id="result-canvas-container">
                     <canvas id="result-canvas" width="600" height="400"></canvas>
                 </div>
-                <button id="download-btn">Download Results</button>
-                <button id="restart-btn">Restart Quiz</button>
+                <button id="download-btn" class="btn">Download Results</button>
+                <button id="restart-btn" class="btn">Restart Quiz</button>
             </div>
         </div>
         <div id="progress-container">
@@ -515,9 +447,9 @@
     </div>
 
     <script>
-        // Immediately invoked function to avoid global variable pollution
+        // 立即执行函数避免全局变量污染
         (function() {
-            // Quiz data - 根据用户提供的新题目内容更新
+            // 题目数据
             const quizData = [
                 {
                     question: "What is the best metaphor for Artificial Intelligence (AI) in this unit?",
@@ -526,7 +458,7 @@
                         "A puppy that learns tricks over time",
                         "A superhero that knows everything"
                     ],
-                    answer: 1, // B. A puppy that learns tricks over time
+                    answer: 1,
                     explanation: "The lesson compares AI to training a puppy – it improves with more examples and practice, just like how AI learns from data."
                 },
                 {
@@ -536,7 +468,7 @@
                         "A message you send to ask AI to do something",
                         "A list of AI-generated answers"
                     ],
-                    answer: 1, // B. A message you send to ask AI to do something
+                    answer: 1,
                     explanation: "A prompt is how you 'talk' to AI – it's like texting your super smart robot friend with a request or command."
                 },
                 {
@@ -546,7 +478,7 @@
                         "A parrot that read a million books",
                         "A machine that makes pizzas"
                     ],
-                    answer: 1, // B. A parrot that read a million books
+                    answer: 1,
                     explanation: "An LLM is like a well-trained parrot – it learned from a huge amount of text and can talk like a human, but it doesn't actually 'understand' in a human way."
                 },
                 {
@@ -556,7 +488,7 @@
                         "A golden ticket to access AI services",
                         "A smartphone screen lock"
                     ],
-                    answer: 1, // B. A golden ticket to access AI services
+                    answer: 1,
                     explanation: "The API key is like a secret handshake or golden ticket – it lets apps talk to the AI system, and without it, access is denied."
                 },
                 {
@@ -566,152 +498,123 @@
                         "How fast the AI replies",
                         "How much the AI can remember at once"
                     ],
-                    answer: 2, // C. How much the AI can remember at once
+                    answer: 2,
                     explanation: "The context window is like a whiteboard – once it fills up, the AI starts forgetting earlier parts of the conversation to make room for new ones."
                 }
             ];
             
-            // Quiz state variables
+            // 状态变量
             let currentQuestion = 0;
             let score = 0;
             let userAnswers = [];
-            let shuffledQuestions = []; // 存储打乱后的题目
+            let shuffledQuestions = [];
             
-            // 打乱数组的函数（Fisher-Yates算法）
-            function shuffleArray(array) {
-                const shuffled = [...array];
+            // 工具函数：打乱数组
+            const shuffleArray = arr => {
+                const shuffled = [...arr];
                 for (let i = shuffled.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
                 }
                 return shuffled;
-            }
+            };
             
-            // 为每个问题创建打乱选项的版本
-            function createShuffledQuestions() {
-                shuffledQuestions = quizData.map(question => {
-                    // 创建选项索引数组
+            // 创建打乱后的题目
+            const createShuffledQuestions = () => {
+                const shuffledQuizData = shuffleArray(quizData);
+                shuffledQuestions = shuffledQuizData.map(question => {
                     const optionIndices = question.options.map((_, index) => index);
-                    // 打乱选项索引
                     const shuffledIndices = shuffleArray(optionIndices);
-                    
-                    // 根据打乱后的索引重新排列选项
                     const shuffledOptions = shuffledIndices.map(index => question.options[index]);
-                    
-                    // 找到正确答案在新排列中的位置
                     const newAnswerIndex = shuffledIndices.indexOf(question.answer);
                     
                     return {
                         ...question,
                         options: shuffledOptions,
-                        answer: newAnswerIndex,
-                        originalAnswer: question.answer // 保存原始答案索引用于调试
+                        answer: newAnswerIndex
                     };
                 });
-            }
+            };
             
-            // Initialize quiz
-            function initQuiz() {
-                createShuffledQuestions(); // 创建打乱选项的题目
-                showQuestion(0);
-                updateProgress();
-            }
+            // DOM元素缓存
+            const elements = {
+                questionNumber: document.getElementById('question-number'),
+                questionText: document.getElementById('question-text'),
+                optionsContainer: document.getElementById('options-container'),
+                feedbackContainer: document.getElementById('feedback-container'),
+                resultIcon: document.getElementById('result-icon'),
+                feedbackTitle: document.getElementById('feedback-title'),
+                explanationText: document.getElementById('explanation-text'),
+                nextBtn: document.getElementById('next-btn'),
+                resultsContainer: document.getElementById('results-container'),
+                questionContainer: document.getElementById('question-container'),
+                scoreText: document.getElementById('score-text'),
+                scoreMessage: document.getElementById('score-message'),
+                progressFill: document.getElementById('progress-fill'),
+                progressText: document.getElementById('progress-text'),
+                progressContainer: document.getElementById('progress-container'),
+                particlesContainer: document.getElementById('particles-container'),
+                quizContent: document.getElementById('quiz-content')
+            };
             
-            // Display question
-            // Show question
-            function showQuestion(index) {
-                const questionData = shuffledQuestions[index]; // 使用打乱后的题目
+            // 显示题目
+            const showQuestion = index => {
+                const questionData = shuffledQuestions[index];
                 
-                // 为当前题目的选项创建随机顺序
-                const optionIndices = [0, 1, 2, 3];
-                const shuffledIndices = optionIndices.sort(() => Math.random() - 0.5);
+                elements.questionNumber.textContent = `Question ${index + 1}`;
+                elements.questionText.textContent = questionData.question;
                 
-                // Update question number and text
-                document.getElementById('question-number').textContent = `Question ${index + 1}`;
-                document.getElementById('question-text').textContent = questionData.question;
+                elements.optionsContainer.innerHTML = '';
                 
-                // Clear and populate options
-                const optionsContainer = document.getElementById('options-container');
-                optionsContainer.innerHTML = '';
-                
-                shuffledIndices.forEach((originalIndex, displayIndex) => {
+                questionData.options.forEach((optionText, optionIndex) => {
                     const option = document.createElement('div');
                     option.className = 'option';
-                    option.style.pointerEvents = 'auto'; // 重新启用点击事件
                     option.innerHTML = `
-                        <div class="option-prefix">${String.fromCharCode(65 + displayIndex)}</div>
-                        <div class="option-text">${questionData.options[originalIndex]}</div>
+                        <div class="option-prefix">${String.fromCharCode(65 + optionIndex)}</div>
+                        <div class="option-text">${optionText}</div>
                     `;
-                    
-                    // 点击事件使用原始索引
-                    option.onclick = () => selectOption(originalIndex);
-                    optionsContainer.appendChild(option);
+                    option.onclick = () => selectOption(optionIndex);
+                    elements.optionsContainer.appendChild(option);
                 });
                 
-                // Hide containers
-                document.getElementById('feedback-container').classList.add('hidden');
-                document.getElementById('results-container').classList.add('hidden');
-                
-                // Update progress text
-                document.getElementById('progress-text').textContent = `${index + 1}/${shuffledQuestions.length}`;
-            }
+                elements.feedbackContainer.classList.add('hidden');
+                elements.resultsContainer.classList.add('hidden');
+                elements.progressText.textContent = `${index + 1}/${shuffledQuestions.length}`;
+            };
             
-            // Select option
-            function selectOption(optionIndex) {
-                const questionData = shuffledQuestions[currentQuestion]; // 使用打乱后的题目
+            // 选择选项
+            const selectOption = optionIndex => {
+                const questionData = shuffledQuestions[currentQuestion];
                 const options = document.querySelectorAll('.option');
                 
-                // 防止重复选择 - 检查是否已有选项被选中
-                let alreadySelected = false;
-                options.forEach(option => {
-                    if (option.classList.contains('selected') || 
-                        option.classList.contains('correct') || 
-                        option.classList.contains('incorrect')) {
-                        alreadySelected = true;
-                    }
-                });
+                // 防止重复选择
+                if (Array.from(options).some(opt => opt.classList.contains('selected'))) return;
                 
-                if (alreadySelected) {
-                    return;
-                }
-                
-                // Record user answer
                 userAnswers[currentQuestion] = optionIndex;
-                
-                // Mark selected option
                 options[optionIndex].classList.add('selected');
                 
-                // 禁用所有选项的点击事件
-                options.forEach(option => {
-                    option.style.pointerEvents = 'none';
-                });
+                // 禁用所有选项
+                options.forEach(option => option.style.pointerEvents = 'none');
                 
-                // Show correct and incorrect options
+                // 显示正确答案
                 setTimeout(() => {
                     options[questionData.answer].classList.add('correct');
-                    
                     if (optionIndex !== questionData.answer) {
                         options[optionIndex].classList.add('incorrect');
                     } else {
-                        // Show celebration effect for correct answers
-                        showCorrectCelebration();
+                        showCelebration();
                     }
-                    
-                    // Show feedback
                     showFeedback(optionIndex === questionData.answer);
                 }, 500);
-            }
+            };
             
-            // Celebration effect for correct answers
-            function showCorrectCelebration() {
-                const container = document.getElementById('quiz-content');
-                
-                // Create burst effect
+            // 庆祝动画
+            const showCelebration = () => {
                 const burst = document.createElement('div');
                 burst.className = 'celebration-burst';
-                container.appendChild(burst);
+                elements.quizContent.appendChild(burst);
                 
-                // Create star shower effect
+                // 星星雨效果
                 for (let i = 0; i < 12; i++) {
                     setTimeout(() => {
                         const star = document.createElement('div');
@@ -719,102 +622,70 @@
                         star.textContent = '⭐';
                         star.style.left = Math.random() * 100 + '%';
                         star.style.top = Math.random() * 50 + 25 + '%';
-                        container.appendChild(star);
+                        elements.quizContent.appendChild(star);
                         
-                        // Remove star after 2 seconds
-                        setTimeout(() => {
-                            if (star.parentNode) {
-                                star.parentNode.removeChild(star);
-                            }
-                        }, 2000);
+                        setTimeout(() => star.remove(), 2000);
                     }, i * 100);
                 }
                 
-                // Remove burst effect after 1 second
-                setTimeout(() => {
-                    if (burst.parentNode) {
-                        burst.parentNode.removeChild(burst);
-                    }
-                }, 1000);
-            }
+                setTimeout(() => burst.remove(), 1000);
+            };
             
-            // Show feedback
-            function showFeedback(isCorrect) {
-                const feedbackContainer = document.getElementById('feedback-container');
-                const resultIcon = document.getElementById('result-icon');
-                const feedbackTitle = document.getElementById('feedback-title');
-                const explanationText = document.getElementById('explanation-text');
-                
-                // Update feedback content
+            // 显示反馈
+            const showFeedback = isCorrect => {
                 if (isCorrect) {
-                    resultIcon.textContent = '🎉';
-                    feedbackTitle.textContent = 'Excellent! Correct answer! +20 points';
-                    score += 20; // 20 points per question
+                    elements.resultIcon.textContent = '🎉';
+                    elements.feedbackTitle.textContent = 'Excellent! Correct answer! +20 points';
+                    score += 20;
                 } else {
-                    resultIcon.textContent = '❌';
-                    feedbackTitle.textContent = 'Incorrect answer! +0 points';
+                    elements.resultIcon.textContent = '❌';
+                    elements.feedbackTitle.textContent = 'Incorrect answer! +0 points';
                 }
                 
-                explanationText.textContent = shuffledQuestions[currentQuestion].explanation;
-                
-                // Show feedback container
-                feedbackContainer.classList.remove('hidden');
-                
-                // Add next question button event
-                document.getElementById('next-btn').onclick = nextQuestion;
-            }
+                elements.explanationText.textContent = shuffledQuestions[currentQuestion].explanation;
+                elements.feedbackContainer.classList.remove('hidden');
+                elements.nextBtn.onclick = nextQuestion;
+            };
             
-            // Next question
-            function nextQuestion() {
+            // 下一题
+            const nextQuestion = () => {
                 currentQuestion++;
-                
                 if (currentQuestion < shuffledQuestions.length) {
                     showQuestion(currentQuestion);
                     updateProgress();
                 } else {
                     showResults();
                 }
-            }
+            };
             
-            // Update progress bar
-            function updateProgress() {
-                const progressFill = document.getElementById('progress-fill');
+            // 更新进度条
+            const updateProgress = () => {
                 const progressPercentage = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
-                progressFill.style.width = progressPercentage + '%';
-            }
+                elements.progressFill.style.width = progressPercentage + '%';
+            };
             
-            // Create particle effects
-            function createParticles() {
-                const particlesContainer = document.getElementById('particles-container');
+            // 创建粒子效果
+            const createParticles = () => {
+                const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
                 
                 for (let i = 0; i < 30; i++) {
                     setTimeout(() => {
                         const particle = document.createElement('div');
                         particle.className = 'particle';
-                        
-                        // Random position and color
-                        const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
                         particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                         particle.style.left = Math.random() * 100 + '%';
                         particle.style.top = Math.random() * 100 + '%';
                         
-                        particlesContainer.appendChild(particle);
-                        
-                        // Remove particle after 3 seconds
-                        setTimeout(() => {
-                            if (particle.parentNode) {
-                                particle.parentNode.removeChild(particle);
-                            }
-                        }, 3000);
+                        elements.particlesContainer.appendChild(particle);
+                        setTimeout(() => particle.remove(), 3000);
                     }, i * 100);
                 }
-            }
+            };
             
-            // Number animation effect
-            function animateScore(finalScore) {
-                const scoreElement = document.getElementById('score-text');
+            // 分数动画
+            const animateScore = finalScore => {
                 let currentScore = 0;
-                const increment = finalScore / 50; // Complete animation in 50 steps
+                const increment = finalScore / 50;
                 
                 const timer = setInterval(() => {
                     currentScore += increment;
@@ -822,163 +693,132 @@
                         currentScore = finalScore;
                         clearInterval(timer);
                     }
-                    scoreElement.textContent = Math.floor(currentScore);
+                    elements.scoreText.textContent = Math.floor(currentScore);
                 }, 40);
-            }
+            };
             
-            // Show results
-            function showResults() {
-                const resultsContainer = document.getElementById('results-container');
-                const questionContainer = document.getElementById('question-container');
-                const feedbackContainer = document.getElementById('feedback-container');
-                const scoreMessage = document.getElementById('score-message');
+            // 显示结果
+            const showResults = () => {
+                elements.questionContainer.classList.add('hidden');
+                elements.feedbackContainer.classList.add('hidden');
+                elements.resultsContainer.classList.remove('hidden');
                 
-                // Hide question and feedback containers
-                questionContainer.classList.add('hidden');
-                feedbackContainer.classList.add('hidden');
-                
-                // Show results container
-                resultsContainer.classList.remove('hidden');
-                
-                // Create particle effects
                 createParticles();
+                setTimeout(() => animateScore(score), 500);
                 
-                // Animate score display
-                setTimeout(() => {
-                    animateScore(score);
-                }, 500);
+                // 根据分数显示不同消息
+                const messages = {
+                    100: '🎉 Amazing! You are an expert in the AI field! Perfect score achieved!',
+                    80: '🌟 Well done! You have a great understanding of AI!',
+                    60: '👍 Good attempt! Keep learning about AI!',
+                    40: '📖 Room for improvement. Learning more about AI would be beneficial!',
+                    0: '💪 Keep going! The AI field awaits your exploration!'
+                };
                 
-                // Show different messages based on score
-                let message = '';
-                if (score === 100) {
-                    message = '🎉 Amazing! You are an expert in the AI field! Perfect score achieved!';
-                } else if (score >= 80) {
-                    message = '🌟 Well done! You have a great understanding of AI!';
-                } else if (score >= 60) {
-                    message = '👍 Good attempt! Keep learning about AI!';
-                } else if (score >= 40) {
-                    message = '📖 Room for improvement. Learning more about AI would be beneficial!';
-                } else {
-                    message = '💪 Keep going! The AI field awaits your exploration!';
-                }
+                const messageKey = Object.keys(messages).reverse().find(key => score >= key);
+                elements.scoreMessage.textContent = messages[messageKey];
                 
-                scoreMessage.textContent = message;
-                
-                // Generate result image
                 generateResultImage();
+                elements.progressContainer.style.display = 'none';
                 
-                // Add download button event
+                // 绑定按钮事件
                 document.getElementById('download-btn').onclick = downloadResult;
-                
-                // Add restart button event
                 document.getElementById('restart-btn').onclick = restartQuiz;
-                
-                // Hide progress bar
-                document.getElementById('progress-container').style.display = 'none';
-            }
+            };
             
-            // Generate result image (removed level information)
-            function generateResultImage() {
+            // 生成结果图片
+            const generateResultImage = () => {
                 const canvas = document.getElementById('result-canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Set background
+                // 设置背景
                 ctx.fillStyle = '#f5f7fa';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                // Add title
+                // 标题
                 ctx.fillStyle = '#764ba2';
                 ctx.font = 'bold 24px "Segoe UI", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('AI Knowledge Quiz Results', canvas.width / 2, 40);
                 
-                // Add score
+                // 分数
                 ctx.fillStyle = '#333';
                 ctx.font = 'bold 36px "Segoe UI", sans-serif';
                 ctx.fillText(`${score}/100 points`, canvas.width / 2, 100);
                 
-                // Add date
-                const date = new Date();
+                // 日期
                 ctx.font = '16px "Segoe UI", sans-serif';
                 ctx.fillStyle = '#666';
-                ctx.fillText(`Completion Date: ${date.toLocaleDateString()}`, canvas.width / 2, 130);
+                ctx.fillText(`Completion Date: ${new Date().toLocaleDateString()}`, canvas.width / 2, 130);
                 
-                // Add divider
+                // 分割线
                 ctx.strokeStyle = '#ddd';
                 ctx.beginPath();
                 ctx.moveTo(50, 150);
                 ctx.lineTo(canvas.width - 50, 150);
                 ctx.stroke();
                 
-                // Add question review
+                // 题目回顾
                 ctx.textAlign = 'left';
                 ctx.font = 'bold 18px "Segoe UI", sans-serif';
                 ctx.fillStyle = '#333';
                 ctx.fillText('Question Review:', 50, 180);
                 
-                // Add results for each question
                 const optionLetters = ['A', 'B', 'C', 'D'];
                 let yPos = 210;
                 
-                for (let i = 0; i < quizData.length; i++) {
-                    const question = quizData[i];
+                shuffledQuestions.forEach((question, i) => {
                     const userAnswer = userAnswers[i];
                     const isCorrect = userAnswer === question.answer;
                     
-                    // Question number and status
                     ctx.font = 'bold 16px "Segoe UI", sans-serif';
                     ctx.fillStyle = isCorrect ? '#28a745' : '#dc3545';
                     ctx.fillText(`Question ${i + 1}: ${isCorrect ? '✓ +20 points' : '✗ +0 points'}`, 50, yPos);
                     
-                    // User choice and correct answer
                     ctx.font = '14px "Segoe UI", sans-serif';
                     ctx.fillStyle = '#555';
-                    ctx.fillText(`Your choice: ${optionLetters[userAnswer]} | Correct answer: ${optionLetters[question.answer]}`, 200, yPos);
+                    const userChoice = userAnswer !== undefined ? optionLetters[userAnswer] : 'No answer';
+                    ctx.fillText(`Your choice: ${userChoice} | Correct answer: ${optionLetters[question.answer]}`, 200, yPos);
                     
                     yPos += 30;
-                }
+                });
                 
-                // Add footer information
+                // 底部信息
                 ctx.textAlign = 'center';
                 ctx.font = 'italic 14px "Segoe UI", sans-serif';
                 ctx.fillStyle = '#777';
                 ctx.fillText('Keep learning and exploring the wonderful world of AI!', canvas.width / 2, canvas.height - 30);
-            }
+            };
             
-            // Download result image
-            function downloadResult() {
+            // 下载结果
+            const downloadResult = () => {
                 const canvas = document.getElementById('result-canvas');
                 const link = document.createElement('a');
-                
-                // Set download attributes
                 link.download = `AI_Quiz_Results_${score}points.png`;
                 link.href = canvas.toDataURL('image/png');
-                
-                // Simulate click to download
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            }
+            };
             
-            // Restart quiz
-            function restartQuiz() {
+            // 重新开始
+            const restartQuiz = () => {
                 currentQuestion = 0;
                 score = 0;
                 userAnswers = [];
-                
-                // Clear particle effects
-                const particlesContainer = document.getElementById('particles-container');
-                particlesContainer.innerHTML = '';
-                
-                // Reset progress bar
-                document.getElementById('progress-container').style.display = 'flex';
-                
-                // Show first question
+                elements.particlesContainer.innerHTML = '';
+                elements.progressContainer.style.display = 'flex';
+                initQuiz();
+            };
+            
+            // 初始化测验
+            const initQuiz = () => {
+                createShuffledQuestions();
                 showQuestion(0);
                 updateProgress();
-            }
+            };
             
-            // Initialize application when DOM is loaded
+            // 启动应用
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initQuiz);
             } else {
