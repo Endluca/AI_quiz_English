@@ -618,36 +618,38 @@
             }
             
             // Display question
+            // Show question
             function showQuestion(index) {
                 const questionData = shuffledQuestions[index]; // 使用打乱后的题目
+                
+                // 为当前题目的选项创建随机顺序
+                const optionIndices = [0, 1, 2, 3];
+                const shuffledIndices = optionIndices.sort(() => Math.random() - 0.5);
                 
                 // Update question number and text
                 document.getElementById('question-number').textContent = `Question ${index + 1}`;
                 document.getElementById('question-text').textContent = questionData.question;
                 
-                // Clear and refill options container
+                // Clear and populate options
                 const optionsContainer = document.getElementById('options-container');
                 optionsContainer.innerHTML = '';
                 
-                // Add options
-                const optionLetters = ['A', 'B', 'C', 'D'];
-                questionData.options.forEach((option, i) => {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'option';
-                    optionElement.innerHTML = `
-                        <div class="option-prefix">${optionLetters[i]}</div>
-                        <div class="option-text">${option}</div>
+                shuffledIndices.forEach((originalIndex, displayIndex) => {
+                    const option = document.createElement('div');
+                    option.className = 'option';
+                    option.style.pointerEvents = 'auto'; // 重新启用点击事件
+                    option.innerHTML = `
+                        <div class="option-prefix">${String.fromCharCode(65 + displayIndex)}</div>
+                        <div class="option-text">${questionData.options[originalIndex]}</div>
                     `;
                     
-                    // Add click event
-                    optionElement.addEventListener('click', () => selectOption(i));
-                    
-                    optionsContainer.appendChild(optionElement);
+                    // 点击事件使用原始索引
+                    option.onclick = () => selectOption(originalIndex);
+                    optionsContainer.appendChild(option);
                 });
                 
-                // Hide feedback container, show question container
+                // Hide containers
                 document.getElementById('feedback-container').classList.add('hidden');
-                document.getElementById('question-container').classList.remove('hidden');
                 document.getElementById('results-container').classList.add('hidden');
                 
                 // Update progress text
@@ -659,10 +661,17 @@
                 const questionData = shuffledQuestions[currentQuestion]; // 使用打乱后的题目
                 const options = document.querySelectorAll('.option');
                 
-                // Prevent repeated selection
-                if (options[0].classList.contains('selected') || 
-                    options[0].classList.contains('correct') || 
-                    options[0].classList.contains('incorrect')) {
+                // 防止重复选择 - 检查是否已有选项被选中
+                let alreadySelected = false;
+                options.forEach(option => {
+                    if (option.classList.contains('selected') || 
+                        option.classList.contains('correct') || 
+                        option.classList.contains('incorrect')) {
+                        alreadySelected = true;
+                    }
+                });
+                
+                if (alreadySelected) {
                     return;
                 }
                 
@@ -671,6 +680,11 @@
                 
                 // Mark selected option
                 options[optionIndex].classList.add('selected');
+                
+                // 禁用所有选项的点击事件
+                options.forEach(option => {
+                    option.style.pointerEvents = 'none';
+                });
                 
                 // Show correct and incorrect options
                 setTimeout(() => {
